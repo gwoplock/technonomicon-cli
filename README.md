@@ -1,0 +1,2 @@
+# Technonomicon-telnet
+# technonomicon-cli
