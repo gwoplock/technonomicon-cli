@@ -40,9 +40,12 @@ void handleMessage(int newsockfd)
         }
         bool exitLoop = false;
         bzero(buffer, 256);
+
         while (!exitLoop)
         {
             n = read(newsockfd, buffer, 255);
+            printf("in: %s\n", buffer);
+            fflush(stdout);
             struct Command* cmd = parseCMD(buffer);
             switch (cmd->cmdCode){
                 case VIEW:{

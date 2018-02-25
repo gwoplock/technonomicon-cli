@@ -1,8 +1,10 @@
 #include "parse.h"
 #include <stdlib.h>
 #include <string.h>
-
+#include <stdio.h>
 char** strSplit(char* toSplit, char delim){
+    printf("spl:%s, delim: %c\n", toSplit, delim);
+    fflush(stdout);
     int tokens = 0;
     for (int i = 0; i < strlen(toSplit); i++){
         if(toSplit[i] == delim){
@@ -10,13 +12,17 @@ char** strSplit(char* toSplit, char delim){
         }
     }
     char** toRet = calloc(sizeof(char*), tokens+1);
-    for(int i = 0, k = 0; i < strlen(toSplit); i++){
+    toRet[0] = toSplit;
+    for(int i = 0, k = 1; i < strlen(toSplit); i++){
         if(toSplit[i] == delim){
-            toRet[k] = toSplit + (i - 1);
+            printf("i: %i, k: %i\n", i,k);
+            toRet[k] = toSplit + (i + 1);
             toSplit[i] ='\0';
             k++;
         }
     }
+    printf("toRet: %s\n", toRet[0]);
+    fflush(stdout);
     return toRet;
 }
 

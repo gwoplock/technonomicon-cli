@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.inc": "makefile",
+        "parse.h": "c"
+    }
+}
