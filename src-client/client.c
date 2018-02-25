@@ -2,9 +2,11 @@
 #include <curses.h>
 #include <netdb.h>
 #include <netinet/in.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -19,6 +21,7 @@ int main () {
     struct sockaddr_in sockaddr;
     struct sockaddr addr;
     char request [256];
+    char command [20];
 
     /* Attempt opening socket */
     tcp_socket = socket (AF, SOCK_STREAM, 0);
@@ -69,10 +72,29 @@ int main () {
 
     initscr ();
     curs_set (0);
-    noecho ();
+    
+    printw ("%s\n", request);
+    while (1) {
+        printw ("technonomicon> ");
+        getstr (command);
 
-    printw ("%s", request);
-    while (getch () != 'q');
+        if (!strcasecmp (command, "quit"))
+            break;
+
+        /* Attempt a request */
+        if (send (tcp_socket, request, strlen (request), 0) < 0) {
+            printw ("Error sending request!\n");
+            goto error;
+        }
+
+        /* Attempt to get response */
+        if (recv (tcp_socket, request, 8, 0) < 0) {
+            printw ("Error getting response!\n");
+            goto error;
+        }
+        
+        printw ("Size: %ld\n", (uint64_t)request);
+    }
 
     curs_set (1);
     endwin ();
