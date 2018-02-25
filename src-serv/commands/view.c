@@ -24,15 +24,16 @@ int openFile(char *file)
 
 void view(int fdSock, struct Command* cmd){
     int fd = openFile(cmd->fullCommand[1]);
-    struct stat st;
-    fstat(fd, &st);
-    char* ret = calloc(sizeof(char*), st.st_size);
-    FILE* fileptr = fdopen(fd, "r");
-    fread(ret, 1, st.st_size, fileptr); 
-    fclose(fileptr);
+    FILE* fp = fdopen(fd, "r");
+    fseek(fp, 0L, SEEK_END);
+    uint64_t sz = ftell(fp);
+    char* ret = calloc(sizeof(char*), sizeof(uint64_t));
+
+    fread(ret, 1, sz, fp); 
+    fclose(fp);
     close(fd);
-    write(fdSock, &st.st_size, sizeof(st.st_size));
-    write(fdSock, ret, st.st_size);
+    write(fdSock, &sz, sizeof(uint64_t));
+    write(fdSock, ret, sizeof(uint64_t));
     free(ret);
 }
 
