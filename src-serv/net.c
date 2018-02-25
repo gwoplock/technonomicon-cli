@@ -54,6 +54,7 @@ void handleMessage(int newsockfd)
                     break;
                 }
                 default:{
+                    write(newsockfd, "ERRCMD", 6);
                     break;
                 }
 
