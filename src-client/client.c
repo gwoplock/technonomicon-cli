@@ -1,5 +1,4 @@
 #include <arpa/inet.h>
-#include <byteswap.h>
 #include <curses.h>
 #include <netdb.h>
 #include <netinet/in.h>
