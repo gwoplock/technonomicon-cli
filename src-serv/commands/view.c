@@ -32,7 +32,6 @@ void view(int fdSock, struct Command* cmd){
     fclose(fileptr);
     close(fd);
     write(fdSock, &st.st_size, sizeof(st.st_size));
-    write(fdSock, "\0\0\0", 4);
     write(fdSock, ret, st.st_size);
     free(ret);
 }
