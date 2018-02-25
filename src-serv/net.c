@@ -37,7 +37,7 @@ void handleMessage(int newsockfd)
         while (!exitLoop)
         {
             n = read(newsockfd, buffer, 255);
-            struct Command cmd = parseCMD(buffer);
+            struct Command* cmd = parseCMD(buffer);
 
             bzero(buffer, 256);
         }

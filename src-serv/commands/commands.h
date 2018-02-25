@@ -2,7 +2,7 @@
 #define COMMANDS_COMMANDS_H_
 
   enum CommandCode{
-        VIEW
+        VIEW, EXIT, UNKNOWN
     };
 
 struct Command {
