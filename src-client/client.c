@@ -1,4 +1,5 @@
 #include <arpa/inet.h>
+#include <byteswap.h>
 #include <curses.h>
 #include <netdb.h>
 #include <netinet/in.h>
@@ -82,18 +83,21 @@ int main () {
             break;
 
         /* Attempt a request */
-        if (send (tcp_socket, request, strlen (request), 0) < 0) {
+        if (send (tcp_socket, command, strlen (request), 0) < 0) {
             printw ("Error sending request!\n");
             goto error;
         }
 
+        memset (request, 0, 256);
         /* Attempt to get response */
         if (recv (tcp_socket, request, 8, 0) < 0) {
             printw ("Error getting response!\n");
             goto error;
         }
         
-        printw ("Size: %ld\n", (uint64_t)request);
+        for (int cx = 0; cx < 10; cx++) {
+            printw ("%c ", *(request + cx));
+        }
     }
 
     curs_set (1);
