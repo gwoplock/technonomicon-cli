@@ -38,7 +38,20 @@ void handleMessage(int newsockfd)
         {
             n = read(newsockfd, buffer, 255);
             struct Command* cmd = parseCMD(buffer);
+            switch (cmd->cmdCode){
+                case VIEW:{
+                    view();
+                    break;
+                }
+                case EXIT:{
+                    exitLoop = true;
+                    break;
+                }
+                default:{
+                    break;
+                }
 
+            }
             bzero(buffer, 256);
         }
 

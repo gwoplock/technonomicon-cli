@@ -1,6 +1,7 @@
 #include "parse.h"
 #include <stdlib.h>
 #include <string.h>
+
 char** strSplit(char* toSplit, char delim){
     int tokens = 0;
     for (int i = 0; i < strlen(toSplit); i++){
