@@ -12,6 +12,10 @@
 
 #define PORT 6969
 
+void sendMOTD(int fd){
+write(fd, "welcome to the technonomicon", 28);
+}
+
 void handleMessage(int newsockfd)
 {
     pid_t pid = fork();
@@ -31,6 +35,8 @@ void handleMessage(int newsockfd)
             shutdown(newsockfd, SHUT_WR);
             close(newsockfd);
             exit(0);
+        } else{
+            sendMOTD(newsockfd);
         }
         bool exitLoop = false;
         bzero(buffer, 256);
@@ -40,7 +46,7 @@ void handleMessage(int newsockfd)
             struct Command* cmd = parseCMD(buffer);
             switch (cmd->cmdCode){
                 case VIEW:{
-                    view();
+                    view(newsockfd, cmd);
                     break;
                 }
                 case EXIT:{

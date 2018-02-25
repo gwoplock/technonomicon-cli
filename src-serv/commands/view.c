@@ -1,5 +1,5 @@
 #include "view.h"
 
-void view(){
-    
+void view(int fd, struct Command* cmd){
+
 }
