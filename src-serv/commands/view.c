@@ -12,12 +12,13 @@ const char *basePath = "./docs/";
 int openFile(char *file)
 {
     char *fullPath = calloc(sizeof(char), strlen(basePath) + strlen(file));
-    strcpy(fullPath, basePath);
-    strcpy(fullPath, file);
+    strcat(fullPath, basePath);
+    strcat(fullPath, file);
     int ret = open(fullPath, O_RDONLY);
     if (ret < 0)
     {
-        //error
+        printf ("Error\n");
+        exit (-1);
     }
     free(fullPath);
     return ret;
@@ -26,15 +27,20 @@ int openFile(char *file)
 void view(int fdSock, struct Command* cmd){
     int fd = openFile(cmd->fullCommand[1]);
     FILE* fp = fdopen(fd, "r");
+    if (!fp) {
+        printf ("Error openinf file pointer\n");
+        exit (-1);
+    }
     fseek(fp, 0L, SEEK_END);
     uint64_t sz = ftell(fp);
-    char* ret = calloc(sizeof(char*), sizeof(uint64_t));
+    fseek(fp, 0L, SEEK_SET);
+    char* ret = calloc(sizeof(char*), sz);
 
     fread(ret, 1, sz, fp); 
     fclose(fp);
     close(fd);
     write(fdSock, &sz, sizeof(uint64_t));
-    write(fdSock, ret, sizeof(uint64_t));
+    write(fdSock, ret, sz * sizeof(uint64_t));
     free(ret);
 }
 
