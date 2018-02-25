@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <stdint.h>
 
 const char *basePath = "./docs/";
 
