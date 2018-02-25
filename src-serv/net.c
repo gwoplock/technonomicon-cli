@@ -1,4 +1,6 @@
 #include "net.h"
+#include "commands/parse.h"
+#include "commands/commands.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,18 +21,28 @@ void handleMessage(int newsockfd)
     }
     else if (pid == 0)
     {
-        
 
-        
         char buffer[256];
-        
+
         bzero(buffer, 256);
         int n = read(newsockfd, buffer, 255);
-        bool exitLoop = false;
-        while (!exitLoop){
-
+        if (strcmp(buffer, "technonomicon") != 0)
+        {
+            shutdown(newsockfd, SHUT_WR);
+            close(newsockfd);
+            exit(0);
         }
-       /* if (n < 0)
+        bool exitLoop = false;
+        bzero(buffer, 256);
+        while (!exitLoop)
+        {
+            n = read(newsockfd, buffer, 255);
+            struct Command cmd = parseCMD(buffer);
+
+            bzero(buffer, 256);
+        }
+
+        /* if (n < 0)
         {
             printf("die 4");
         }
