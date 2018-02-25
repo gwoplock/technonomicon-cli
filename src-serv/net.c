@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <stdbool.h>
 
 #define PORT 6969
 
@@ -25,12 +26,17 @@ void handleMessage(int newsockfd)
         
         bzero(buffer, 256);
         int n = read(newsockfd, buffer, 255);
-        if (n < 0)
+        bool exitLoop = false;
+        while (!exitLoop){
+
+        }
+       /* if (n < 0)
         {
             printf("die 4");
         }
         printf("Here is the message: %s\n", buffer);
         n = write(newsockfd, "I got your message", 18);
+        */
         shutdown(newsockfd, SHUT_WR);
         if (n < 0)
         {
