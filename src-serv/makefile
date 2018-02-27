@@ -1,6 +1,6 @@
 OBJS = main.o net.o commands/parse.o commands/view.o
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99 --pedantic-errors -c
+CFLAGS = -Wall -Wextra -std=c99 --pedantic-errors
 
 .PHONY: all
 
