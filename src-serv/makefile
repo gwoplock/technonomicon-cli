@@ -10,3 +10,4 @@ all: $(OBJS)
 
 clean:
 	 rm -f $(OBJS)
+	 rm -f server
