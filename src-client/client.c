@@ -22,6 +22,7 @@ int main () {
     struct sockaddr addr;
     char request [256];
     char command [20];
+    char *file;
 
     /* Attempt opening socket */
     tcp_socket = socket (AF, SOCK_STREAM, 0);
@@ -70,8 +71,9 @@ int main () {
         goto error;
     }
 
+    WINDOW *pad;
     initscr ();
-    curs_set (0);
+    scrollok (stdscr, 1);
     
     printw ("%s\n", request);
     while (1) {
@@ -84,19 +86,39 @@ int main () {
         /* Attempt a request */
         if (send (tcp_socket, command, strlen (request), 0) < 0) {
             printw ("Error sending request!\n");
-            goto error;
+            goto error_ncurses;
         }
 
         memset (request, 0, 256);
         /* Attempt to get response */
         if (recv (tcp_socket, request, 8, 0) < 0) {
             printw ("Error getting response!\n");
-            goto error;
+            goto error_ncurses;
         }
         
-        for (int cx = 0; cx < 10; cx++) {
-            printw ("%c ", *(request + cx));
+        uint64_t size = *(uint64_t*)request;
+        file = calloc (size, 1);
+        if (!file) {
+            printf ("Unable to allocate space for file.\n");
+            goto error_ncurses;
         }
+
+        /* Attempt to read file */
+        if (recv (tcp_socket, file, size, 0) < 0) {
+            printw ("Error getting file!\n");
+            goto error_ncurses;
+        }
+
+        int maxy, maxx;
+        getmaxyx (stdscr, maxy, maxx);
+        pad = newpad (500, maxx);
+        mvwprintw (pad, 0, 0, "%s", file);
+        for (int cx = 0; cx < 10; cx++) {
+            prefresh (pad, cx, 0, 0, 0, 20, 20);
+            wgetch (pad);
+        }
+
+        free (file);
     }
 
     curs_set (1);
@@ -106,6 +128,8 @@ int main () {
     close (tcp_socket);
     return 0;
 
+error_ncurses:
+    endwin ();
 error:
     close (tcp_socket);
 error_quit:

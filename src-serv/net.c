@@ -49,9 +49,7 @@ void handleMessage(int newsockfd)
             struct Command* cmd = parseCMD(buffer);
             switch (cmd->cmdCode){
                 case VIEW:{
-                    printf ("1\n");
                     view(newsockfd, cmd);
-                    printf ("2\n");
                     break;
                 }
                 case EXIT:{
