@@ -54,6 +54,7 @@ void handleMessage(int newsockfd)
                 }
                 case EXIT:{
                     exitLoop = true;
+                    //exit(0);
                     break;
                 }
                 default:{
