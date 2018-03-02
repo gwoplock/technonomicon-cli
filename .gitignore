@@ -1,3 +1,5 @@
 *.o
 *.swp
 *.out
+src-client/client
+src-serv/server
