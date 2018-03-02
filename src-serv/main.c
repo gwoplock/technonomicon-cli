@@ -5,6 +5,7 @@
 #include <signal.h>
 
 void signalHandler( int signum ) {
+    (void) signum;
     printf("clearing child");
     fflush(stdout);
     wait(NULL);

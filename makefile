@@ -5,9 +5,9 @@ OBJS =  src-serv src-client
 all: $(OBJS)
 
 $(OBJS):
-	@ make -C $@ all
+	 @ $(MAKE) -C $@ all
 
 clean:
 	@ #TODO make better
-	@ make -C src-serv clean
-	@ make -C src-client clean
+	@ $(MAKE) -C src-serv clean
+	@ $(MAKE) -C src-client clean

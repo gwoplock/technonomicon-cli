@@ -6,14 +6,14 @@ char** strSplit(char* toSplit, char delim){
     printf("spl:%s, delim: %c\n", toSplit, delim);
     fflush(stdout);
     int tokens = 0;
-    for (int i = 0; i < strlen(toSplit); i++){
+    for (unsigned int i = 0; i < strlen(toSplit); i++){
         if(toSplit[i] == delim){
             tokens++;
         }
     }
     char** toRet = calloc(sizeof(char*), tokens+1);
     toRet[0] = toSplit;
-    for(int i = 0, k = 1; i < strlen(toSplit); i++){
+    for(unsigned int i = 0, k = 1; i < strlen(toSplit); i++){
         if(toSplit[i] == delim){
             printf("i: %i, k: %i\n", i,k);
             toRet[k] = toSplit + (i + 1);
